@@ -1,0 +1,113 @@
+
+What is laravel?
+		Laravel is a PHP web framework that uses the MVC architecture.
+
+MVC - Model View Controller
+
+	Models:		Deals with database
+	View:		Deals with the HTML
+	Controller:	The middle-man
+
+
+Serve site:
+	command: php artisan serve
+
+
+Routes
+	Routes are located inside \app\http\routes.php
+
+		Routes Examples: -> 1st Parameter is the route, 2nd param is the behavior function	
+			Route::get('/', function(){
+				return view('NameOfTheView');
+			})
+
+		Passing variables: Variables received in the url need to be passed to the function
+			Route::get('/posts/{id}/{name}', function($id, $name){
+				return "The id value is: ". $id . " and my name is ". $name;
+			})
+
+		Nick-naming a route:
+		 	Route::get('/admin/posts/example', array('as' => 'admin.home', function(){
+
+		 		$url = route('admin.home'); //passing hole url with route helper function
+		 		return "this url is ". $url;
+
+		 	}));
+
+		 Routing to a controller method: 
+		 	// id is going to be passed to method function
+		 	Route::get('/post/{id}', 'ControllerName@method')
+
+		 Creating named routes:
+		 	Route:resource('posts', 'ControllerName');
+		 	/*
+		 	 |	This will create on "php artisan route:list" the CRUD routes for the different HTTP methods (DELETE, UPDATE, GET, etc)
+		 	 |		
+		 	 |		--------------------------------------------
+		 	 |		METHOD 			URI				Name 		
+		 	 |		--------------------------------------------
+		 	 |		GET|HEAD		posts			posts.index
+		 	 |		POST 			posts 			posts.store
+		 	 |		GET|HEAD 		posts/create 	posts.create
+		 	 |		DELETE 			posts/{posts}	posts.destroy
+		 	 |		PUT|PATCH 		posts/{posts} 	posts.update
+		 	 |		GET|HEAD 		posts/{posts} 	posts.show
+		 	 |		GET|HEAD 		posts/{posts} 	posts.edit
+		 	 |
+		 	 */
+		 	
+	Commands:  
+		php artisan route:list 	//Shows the list of routes in the project
+
+
+Controllers
+	Controllers are located in \app\Http\Controllers
+	Always use CamelCase convention
+
+	Commads: 
+		//Creates a controller
+		php artisan make:controller ControllerName
+
+		//Creates controller as resource with CRUD functions
+		php artisan make:controller --resource ControllerName	
+
+
+Views
+	Views are located in \resources\views\ files need to extention ".blade.php"
+
+	Passing data to views:
+
+		There are multiple ways of passing data to a view. Variable need to be used in the view as {{$variable}}
+
+		Examples:
+
+			return view('contact')->with('variable',$variable);
+
+			For passing multiple parameters
+				public function show_my_view($id, $name, $lastName){
+
+					return view('contact', compact('id', 'name', 'lastName'))
+				}
+
+			    return view('contact', [
+		            'firstName' => 'Carlos',
+		            'lastName' => 'Garcia',
+		            'age' => '30'
+		        ]);
+
+Using Blade
+	 /* Popular convention: To create a Master Page named \resources\views\layouts\app.blade.php */
+
+	 @extends('layout.app') -> Includes the layout in the view
+	 
+	 @yield('view_name') -> Is a section to be replaced with another content inside a view that extended the layout
+
+	 @section('section_name') the name of the section where your code is going to be placed. It has to end with
+	 @stop or @endsection
+
+	 	Usage: 
+	 			1. Layout name "app.blade.php" has a @yield named 'content'. 
+	 			2. View has to @extends('app') to include the layout.
+	 			3. The content inside the @section('content') will be placed inside the @yield of the layout
+
+

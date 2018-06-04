@@ -11,9 +11,9 @@
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+Route::get('/', function () {
+    return view('welcome');
+});
 
 // Route::get('/contact/{id}', function ($id){
 //     return "This is what you wrote: ".$id;
@@ -28,6 +28,6 @@
 
 // Route::get('/posts/{id}', 'PostsController@index');
 
-Route::resource('posts', 'PostsController');
+//Route::resource('posts', 'PostsController');
 
-Route::get('/contact/{id}', 'PostsController@contact');
+//Route::get('/contact/{id}', 'PostsController@contact');

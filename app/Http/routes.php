@@ -52,21 +52,60 @@ use App\Post;
 //Route::get('/contact/{id}', 'PostsController@contact');
 
 
-Route::get('/', function(){
-    return view('welcome');
-});
+// Route::get('/', function(){
+//     return view('welcome');
+// });
 
-Route::get('/api/posts', function(){
-
-  
-    $posts = Post::all();
-    return $posts;
-});
-
-Route::get('/api/posts/{id}', function($id){
+// Route::get('/api/posts', function(){
 
   
-    $post = Post::find($id);
-    return $post->title;
+//     $posts = Post::all()->where();
+//     return $posts;
+// });
 
+// Route::get('/api/posts/{id}', function($id){
+
+  
+//     $post = Post::find($id);
+//     return $post->title;
+
+// });
+
+// Route::get('/basicInsert', function(){
+
+//     $post = new Post;
+//     $post->title = "Eloquent ORM";
+//     $post->content = "This is an insert from Eloquent";
+//     $post->author = "Anonymous";
+//     $post->categories = "Programming";
+
+//     $post->save();
+// });
+
+// Route::get('/edit/{title}', function($title){
+
+//         $post = Post::find(1);
+//         $post->title = $title;
+//         $post->save();
+
+// });
+
+// Route::get('/create', function(){
+
+//     Post::create([
+//         'title'=>'This is a new title',
+//         'content'=>'This is the content of the new title',
+//         'author'=>'Create method',
+//         'category'=>'Miscellaneous'
+//         ]);
+// });
+
+Route::get('/softdelete', function(){
+
+    Post::find(1)->delete();
+});
+
+Route::get('/select', function(){
+
+        return Post::find(1);
 });

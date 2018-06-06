@@ -209,3 +209,79 @@ Models and Eloquent
 	For retrieving data with where and chaining statements.
 		$posts = Post::where('id', 1)->orderBy('id', 'desc')->take(1)->get();
 		$posts = Post::where('user_count', '<', 50)->firstOrFail();
+
+
+	Inserting data
+		Ex:
+			$post = new Post;
+			$post->title = "Eloquent ORM";
+			$post->content = "This is an insert from Eloquent";
+			$post->author = "Anonymous";
+			$post->categories = "Programming";
+			$post->save();
+
+			/* After setting the values save() method needs to be run to save the data*/
+
+	Updating data:
+		Ex:
+			$post = Post::find(1);
+        	$post->title = $new_title;
+        	$post->save();
+
+		Beside this we can update date using the update() method as below:
+
+			Post::where('id', 2)->where('is_admin', 0)->update(['title'=>'NEW PHP TITLE', 'content'=>'NEW PHP CONTENT']);
+	
+	Creating data:
+		!!!NOTE!!! - update() AND create() METHODS MODIFY THE CREATED_AT AND UPDATE_AD ROWS AUTOMATICALY, save() METHOD DOES NOT
+		
+		The create method is used to mass assign values. By default this create function is disabled and you need to specify in the model the columns that are
+		safe to insert via this method.
+
+		To do this add the following to the Model:
+			
+			/* 
+			 |	In the following model it is safe to use create on columns 'title' and 'content'
+			*/
+			class Post extends Model{
+
+					protected $fillable = ['title', 'content'];
+			}
+
+		Calling the create after enabling it on the Model.
+
+			Post::create(['title'=>'This is a new title', 'content'=>'This is a new content']);
+
+	Deleting data:
+		Call method delete() or destroy().
+		
+		Ex:
+			Post::where('is_admin', 0)->where('category', 'Programming')->delete();
+			
+			/*
+			 |	Destroy receives the id as parameter, it can also receive and array of ids
+			 */
+			Post::destroy(id);
+			Post::destroy([4,5]); 
+
+	Soft delete:
+		When we SoftDelete in Laravel, the affected row is not removed completely from the database, a delete_at column is going to track
+		the date when this row was soft deleted. If a row has been soft deleted (will have a date on deleted_at column), it wont be queried by 
+		Laravel Model. This means that when we use the Post::all(), select() or any other method, this row will not be returned.
+
+		In order to Soft Delete rows, first we need to import the Eloquent SoftDelete method.
+			use Illuminate\Database\Eloquent\SoftDeletes;
+		
+		We also need to use it in the Model and set the column in the protected variable.
+
+			class Post extendes Model{
+				use SoftDeletes;
+
+				protected $dates = ['deleted_at'];
+			}
+		
+		This needs to be added to the migration, either as an added column on in the create table migration. Once we do this, every time we run the delete() method
+		rows affected will be soft deleted.
+
+
+

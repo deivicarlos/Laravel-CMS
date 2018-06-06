@@ -182,3 +182,30 @@ Raw SQL Queries
 			$deleted = DB:delete('delete from posts where id = ?', [1]);
 			return $deleted;
 		});
+
+Models and Eloquent
+	Models create are located in \app. To create a model via artisan console write: 
+		
+		php artisan make:model ModelName -m
+		/*
+		 |	If you flag it with '-m' a migration will be created also the Model name should be with Caps,
+		 |	Laravel by convention will look for a table named like the model in lowecase and plural
+		 |	Ex:
+		 |		If the name of the model is 'Post', the name of the table should be 'posts'
+		 |
+		 |	
+		 */
+
+		 If you want to change the default or convention values for the Model you need to change the $table and the $primaryKey variables
+
+		 Ex:
+
+			 class Post extends Model {
+
+				 protected $table = 'my_tabel';
+				 protected $primaryKey = 'my_id';
+			 }
+
+	For retrieving data with where and chaining statements.
+		$posts = Post::where('id', 1)->orderBy('id', 'desc')->take(1)->get();
+		$posts = Post::where('user_count', '<', 50)->firstOrFail();

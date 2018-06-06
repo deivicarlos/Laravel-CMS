@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 use App\Http\Requests;
 
@@ -13,10 +14,11 @@ class PostsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($id)
+    public function index()
     {
-        //
-        return 'It is working: '.$id;
+        $results = DB::select('select * from posts');
+
+        return $results;
     }
 
     /**
@@ -48,7 +50,8 @@ class PostsController extends Controller
      */
     public function show($id)
     {
-        //
+        //$result = DB::select('select * from posts where id=?', $id);
+        return 'Getting specific id';
     }
 
     /**
@@ -59,7 +62,7 @@ class PostsController extends Controller
      */
     public function edit($id)
     {
-        //
+        return "ID:".$id." was edited in the DB successfully";
     }
 
     /**
@@ -71,7 +74,7 @@ class PostsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return "ID:".$id." was updated in the DB successfully";
     }
 
     /**
@@ -82,11 +85,7 @@ class PostsController extends Controller
      */
     public function destroy($id)
     {
-        //
-    }
-
-    public function contact($id)
-    {
-        return "Id number is: ". $id;
+        DB::delete('delete from posts where id=?',$id);
+        return "ID:".$id." was deleted in the DB successfully";
     }
 }

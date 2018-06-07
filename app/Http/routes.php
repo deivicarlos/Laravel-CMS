@@ -63,13 +63,13 @@ use App\Post;
 //     return $posts;
 // });
 
-// Route::get('/api/posts/{id}', function($id){
+Route::get('/api/posts/{id}', function($id){
 
   
-//     $post = Post::find($id);
-//     return $post->title;
+    $post = Post::find($id);
+    return $post;
 
-// });
+});
 
 // Route::get('/basicInsert', function(){
 
@@ -77,7 +77,7 @@ use App\Post;
 //     $post->title = "Eloquent ORM";
 //     $post->content = "This is an insert from Eloquent";
 //     $post->author = "Anonymous";
-//     $post->categories = "Programming";
+//     $post->category = "Programming";
 
 //     $post->save();
 // });
@@ -100,12 +100,20 @@ use App\Post;
 //         ]);
 // });
 
-Route::get('/softdelete', function(){
+Route::get('/softdelete/{id}', function($id){
 
-    Post::find(1)->delete();
+    Post::find($id)->delete();
 });
 
-Route::get('/select', function(){
 
-        return Post::find(1);
+Route::get('/select/{id}', function($id){
+
+    $post = Post::withTrashed()->where('id',$id)->get();
+    return $post;
+});
+
+Route::get('/restore/{id}', function($id){
+
+    Post::onlyTrashed()->where('id',$id)->restore();
+
 });

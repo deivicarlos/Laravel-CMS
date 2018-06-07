@@ -283,5 +283,27 @@ Models and Eloquent
 		This needs to be added to the migration, either as an added column on in the create table migration. Once we do this, every time we run the delete() method
 		rows affected will be soft deleted.
 
+	Retrieving deleted items (SoftDeletes)
+		In order to select items that where soft deleted we need to use method withTrashed() and onlyTrashed(). As the their respective names describe their behavior, the 
+		withTrashed() method will include in the query all rows no matter if they were previously trashed. Method onlyTrashed() will only return the methods trashed. Keep in mind
+		that what determinates if a row was soft deleted or not is a timestamp in the "delete_at" row.
 
+		Ex:
 
+			$post = Post::withTrashed()->get();
+    		return $post;
+
+			$post = Post::onlyTrashed()->get();
+    		return $post;
+
+	Restoring soft deleted items
+		For restoring an item you just need to add the restore() method at the end of the query for it to be restored.
+
+		Ex:
+			$post = Post::withTrashed()->where('id', 1)->restore();
+
+	Remove permanently items
+		For permanently delete an item you just need to add the forceDelete() method at the end of the query for it to be permanently removed.
+
+		Ex:
+			$post = Post::withTrashed()->where('id', 1)->forceDelete();

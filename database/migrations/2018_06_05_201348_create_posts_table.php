@@ -19,6 +19,7 @@ class CreatePostsTable extends Migration
             $table->string('author');
             $table->string('category');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -1,6 +1,7 @@
 <?php
 
 use App\Post;
+use App\User;
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -115,5 +116,35 @@ Route::get('/select/{id}', function($id){
 Route::get('/restore/{id}', function($id){
 
     Post::onlyTrashed()->where('id',$id)->restore();
+
+});
+
+
+/* One to One relationship */
+Route::get('/user/{id}/post', function($id){
+
+    return User::find($id)->post;
+});
+
+
+/* One to One relationship Inverse */
+Route::get('/post/{id}/user', function($id){
+
+    return Post::find($id)->user;
+
+});
+
+
+/* One to Many relationship*/
+Route::get('/user/{id}/posts', function($id){
+
+    $user = User::find($id);
+
+    foreach($user->posts as $post){
+        echo "<h1>".$post->title."</h1>";
+        echo "<p>".$post->content."</p>";
+    }
+    
+
 
 });

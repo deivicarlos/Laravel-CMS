@@ -307,3 +307,42 @@ Models and Eloquent
 
 		Ex:
 			$post = Post::withTrashed()->where('id', 1)->forceDelete();
+
+	
+	One to One Relationship
+		In the one to one relation you need to specify in the Model the type of relation it has with another Model.
+
+		Ex: 	
+			/*
+			 | Inside User Model class
+			*/
+
+			public function post(){
+
+				/* <-- NOTE - BY DEFAULT THIS IS GOING TO LOOK FOR THE "user_id" COLUMN IN THE "Post" TABLE. 
+					THIS IS BECAUSE THE NAME OF THE MODEL THAT HAS THE 	RELATION IN NAMED user, SO LARAVEL 
+						ADDS THE "_id" BY DEFAULT --> */
+
+				return $this->hasOne('App\Post');
+			}
+
+			The "hasOne()" function takes as a second parameter the name of the column on the other table that identifies the relation.
+
+				Ex: $this->hasOne('App\Post', 'the_user_id');
+		
+			If you you dont have an "id" column you need to specify this in the hasOne() function as Laravel will look for it by default.
+				Ex: $this->hasOne('App\Post', 'the_user_id', 'id_field');
+
+			Always import the models in order to use them.
+			
+			Ex:
+				/* 
+				 |	Post is an object so the columns can be accessed like: 
+				 |		User::find($id)->post->title 
+				 */
+				Route::get('/user/{id}/posts', function($id){
+
+					return User::find($id)->post;
+				});
+
+		To do the Inverse relation we use the belongsTo() function in Model affected.

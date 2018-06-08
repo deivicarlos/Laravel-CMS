@@ -11,4 +11,9 @@ class Post extends Model
 
     protected $dates = ['deleted_at'];
     protected $fillable = ['title', 'content', 'author', 'category'];
+
+    public function user(){
+
+        return $this->belongsTo('App\User');
+    }
 }

@@ -362,6 +362,37 @@ Models and Eloquent
 			
 			Ex: belongsToMany('App\User', 'user_roles', 'user_id', 'role_id');
 
+	For accessing the pivot table:
 
+		public function roles(){
+
+				return $this->belongsToMany('App\User')->withPivot('created_at');
+		}
+
+		$users = find($id);
+
+		foreach($users->roles as $role){
+			echo $role->pivot->created_at;
+		}
+
+	Has Many Through
+		In this type of relation we connect 2 tables with an intermediate table which is not a pivot table like the many to many relationship. For intance,
+		we have a country table that has many users (country_id caloumn will be in the users table), and a users table that has many posts (user_id column will
+		be in the posts table). In order for us to get the posts from the Country Model we need a hasManyThrough() function.
+
+			hasManyThrough('target_table', 'middle_table', 'middle_table_relation_id', 'target_table_relation_id');
+
+			target_table: this is the table you are trying to get info from.
+			middle_table: this is the table that you are using to connect to the target table
+			middle_table_relation_id: this is the column id that relates origin table and middle table
+			target_table_relation_id: this is the column id that relates the middle table and the target table
+		
+		Use:
+
+
+
+			public function posts(){
+				return $this->hasManyThrough('App\Post', 'App\Users', 'country_id', 'user_id' )
+			}
 
 		

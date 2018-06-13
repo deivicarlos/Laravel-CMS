@@ -346,3 +346,22 @@ Models and Eloquent
 				});
 
 		To do the Inverse relation we use the belongsTo() function in Model affected.
+
+	One to Many Relation:
+		The principle is the same af the one above (One to One) but intead of using the hasOne() function we use the hasMany() function.
+	
+	Many to Many relation:
+		To have a many to many relationship we need to use a pivot table that will have the id of both tables we are relating. For instance, if we want to have 
+		a many to many relation between a Users table and Roles table, we need a pivot table that will have 'user_id' and 'role_id', this table will contain the
+		relation between these two table. By Laravel convetion the name of the pivot table is the conjuction of both original tables (in sigular) and ordered 
+		alphabetically and separated by an underscore '_'. Ex: Pivot table between 'users' and 'roles' table should be name 'role_user'.
+
+		To complete each relation we need to use the "belongsToMany()" in each principal table MODEL. Note that the pivot table doesnt have a Model class. 
+		
+		The parameters for the belongsToMany('Model', 'pivot_table', 'foreing_key_1','foreing_key_2');
+			
+			Ex: belongsToMany('App\User', 'user_roles', 'user_id', 'role_id');
+
+
+
+		

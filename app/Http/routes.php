@@ -72,6 +72,7 @@ Route::get('/api/posts/{id}', function($id){
 
 });
 
+
 // Route::get('/basicInsert', function(){
 
 //     $post = new Post;

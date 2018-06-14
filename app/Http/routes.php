@@ -2,6 +2,8 @@
 
 use App\Post;
 use App\User;
+use App\Video;
+use App\Comment;
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -64,14 +66,17 @@ use App\User;
 //     return $posts;
 // });
 
-Route::get('/api/posts/{id}', function($id){
+// Route::get('/api/posts/{id}', function($id){
 
   
-    $post = Post::find($id);
-    return $post;
+//     $post = Post::find($id);
+//     return $post;
 
-});
+// });
 
+// Route::get('/', function() {
+//     return view('welcome');
+// });
 
 // Route::get('/basicInsert', function(){
 
@@ -102,50 +107,82 @@ Route::get('/api/posts/{id}', function($id){
 //         ]);
 // });
 
-Route::get('/softdelete/{id}', function($id){
+// Route::get('/softdelete/{id}', function($id){
 
-    Post::find($id)->delete();
-});
-
-
-Route::get('/select/{id}', function($id){
-
-    $post = Post::withTrashed()->where('id',$id)->get();
-    return $post;
-});
-
-Route::get('/restore/{id}', function($id){
-
-    Post::onlyTrashed()->where('id',$id)->restore();
-
-});
+//     Post::find($id)->delete();
+// });
 
 
-/* One to One relationship */
-Route::get('/user/{id}/post', function($id){
+// Route::get('/select/{id}', function($id){
 
-    return User::find($id)->post;
-});
+//     $post = Post::withTrashed()->where('id',$id)->get();
+//     return $post;
+// });
 
+// Route::get('/restore/{id}', function($id){
 
-/* One to One relationship Inverse */
-Route::get('/post/{id}/user', function($id){
+//     Post::onlyTrashed()->where('id',$id)->restore();
 
-    return Post::find($id)->user;
-
-});
+// });
 
 
-/* One to Many relationship*/
-Route::get('/user/{id}/posts', function($id){
+// /* One to One relationship */
+// Route::get('/user/{id}/post', function($id){
 
-    $user = User::find($id);
+//     return User::find($id)->post;
+// });
 
-    foreach($user->posts as $post){
-        echo "<h1>".$post->title."</h1>";
-        echo "<p>".$post->content."</p>";
-    }
+
+// /* One to One relationship Inverse */
+// Route::get('/post/{id}/user', function($id){
+
+//     return Post::find($id)->user;
+
+// });
+
+
+// /* One to Many relationship*/
+// Route::get('/user/{id}/posts', function($id){
+
+//     $user = User::find($id);
+
+//     foreach($user->posts as $post){
+//         echo "<h1>".$post->title."</h1>";
+//         echo "<p>".$post->content."</p>";
+//     }
     
 
+
+// });
+
+Route::get('/videos/{id}/comment', function($id){
+
+    $video = Video::findOrFail($id);
+
+    foreach($video->comments as $comment){
+
+        echo $comment;
+    }
+
+});
+
+
+Route::get('/posts/{id}/comment', function($id){
+
+    $post = Post::findOrFail($id);
+
+    foreach($post->comments as $comment){
+
+        echo $comment;
+    }
+
+});
+
+
+Route::get('/comment/{id}', function($id) {
+
+    $comment = Comment::findOrFail($id);
+
+    return $comment->commentable;
 
 });

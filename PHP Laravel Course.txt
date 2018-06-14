@@ -382,6 +382,8 @@ Models and Eloquent
 
 			hasManyThrough('target_table', 'middle_table', 'middle_table_relation_id', 'target_table_relation_id');
 
+			NOTE: IF YOU FOLLOW LARAVEL'S CONVENTION ON THE NAME ID'S THE SPECIFICATION OF THE IDS ON THE FUNCTION CALL WONT BE NECESSARY.
+
 			target_table: this is the table you are trying to get info from.
 			middle_table: this is the table that you are using to connect to the target table
 			middle_table_relation_id: this is the column id that relates origin table and middle table
@@ -389,10 +391,49 @@ Models and Eloquent
 		
 		Use:
 
-
-
 			public function posts(){
-				return $this->hasManyThrough('App\Post', 'App\Users', 'country_id', 'user_id' )
+				return $this->hasManyThrough('App\Post', 'App\Users', 'country_id', 'user_id' );
 			}
-
 		
+	Polymorphic Relationship
+		Polymorphic relationships lets you relate a table with many different ones. Basically, the table will have two columns that will handle the
+		relation it has with other tables. A use case of this polymorphic relation is a comments table. Lets say you have a videos table and a posts table,
+		and in both of those you are able to comment, meaning that posts and videos are related to comments. In this example instead of having a comments table
+		for each one (posts and videos), we share the comments table with both by making it polymorphic.
+
+		A polymorphic tables need 2 important columns "commentable_id" and "commentable_type". the "commentable_id" will contain the ID value of the post or video, 
+		the "commentable_type" will contain the class name of the owning model ('App\Post' or 'App\Video').
+
+		So the comments table will look like this:
+
+			comments
+			----------
+			id - integer
+			body - string
+			commentable_id - integer
+			commentable_type - string
+
+		Once this is done we need to create in the Model a function called "commentable" in this example thats the name we need to use as per convention we use 
+		the same name plus 'id' and 'type' for the columns. That class needs to return morphTo() method.
+
+			class Comment extends Model {
+
+				public function commentable() {
+					return $this->morphTo();
+				}
+			}
+		
+		After this, the models that this model morphs to needs to use the morphMany() function to return the rows that belong the model type as well as the function
+		that performs the morphTo() method.
+
+			class Post {
+				public function comments() {
+					return $this->morphMany('App\Comment', 'commentable');
+				}
+			}
+		
+			class Video {
+				public function comments() {
+					return $this->morphMany('App\Comment', 'commentable');
+				}
+			}

@@ -4,6 +4,7 @@ use App\Post;
 use App\User;
 use App\Video;
 use App\Comment;
+use App\Tag;
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -74,9 +75,7 @@ use App\Comment;
 
 // });
 
-// Route::get('/', function() {
-//     return view('welcome');
-// });
+
 
 // Route::get('/basicInsert', function(){
 
@@ -155,34 +154,76 @@ use App\Comment;
 
 // });
 
-Route::get('/videos/{id}/comment', function($id){
+// Route::get('/videos/{id}/comment', function($id){
 
+//     $video = Video::findOrFail($id);
+
+//     foreach($video->comments as $comment){
+
+//         echo $comment;
+//     }
+
+// });
+
+
+// Route::get('/posts/{id}/comment', function($id){
+
+//     $post = Post::findOrFail($id);
+
+//     foreach($post->comments as $comment){
+
+//         echo $comment;
+//     }
+
+// });
+
+
+// Route::get('/comment/{id}', function($id) {
+
+//     $comment = Comment::findOrFail($id);
+
+//     return $comment->commentable;
+
+// });
+
+
+Route::get('/', function() {
+    return view('welcome');
+});
+
+
+
+Route::get('/videos/{id}/tags', function($id) {
     $video = Video::findOrFail($id);
 
-    foreach($video->comments as $comment){
-
-        echo $comment;
+    foreach($video->tags as $tag){
+        echo $tag->name."<br>";
     }
-
 });
 
 
-Route::get('/posts/{id}/comment', function($id){
-
+Route::get('/posts/{id}/tags', function($id) {
     $post = Post::findOrFail($id);
 
-    foreach($post->comments as $comment){
-
-        echo $comment;
+    foreach($post->tags as $tag){
+        echo $tag->name."<br>";
     }
-
 });
 
+Route::get('/tags/{id}/posts', function($id) {
+    $tag = Tag::findOrFail($id);
 
-Route::get('/comment/{id}', function($id) {
+    //return $tag->posts;
+    foreach($tag->posts as $post){
+        echo $post->title."<br>";
+    }
+});
 
-    $comment = Comment::findOrFail($id);
+Route::get('/tags/{id}/videos', function($id) {
+    $tag = Tag::findOrFail($id);
 
-    return $comment->commentable;
-
+    //return $tag->posts;
+    foreach($tag->videos as $video){
+        echo $video->name."<br>";
+    }
 });
